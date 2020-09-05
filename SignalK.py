@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: iso-8859-15 -*-
-# Author Per Norrfors 2020-09-05
+a# Author Per Norrfors 2020-09-05
 import subprocess
 import sys
 sys.path.append("/home/pi/Documents/RPI_Remote/Waveshare/")  # OK
@@ -82,11 +82,11 @@ class SignalK:
         self.res_float = 0.0
         self.res_int = 0
         self.loaded_json = {}  # dict
-        self.SignalK_URL = URL  # 'alumina.norrfors.se:3000'
+        self.SignalK_URL = URL  
 
     def Read_SignalK(self, URL, OKtxt, NOKtxt):
         print(self.SignalK_URL + URL)
-#        resp = requests.get('http://alumina.norrfors.se:3000/signalk/v1/api/')
+#        resp = requests.get('http://skserver:3000/signalk/v1/api/')
 
         resp = requests.get(self.SignalK_URL + URL)
         self.status_code = resp.status_code
@@ -152,7 +152,7 @@ if __name__ == "__main__":
     pos = 'Signal-K: No GPS!'
     temp = ''
     pressure = ''
-#    mySK=SignalK('http://alumina.norrfors.se:3000')  # Instantiate SignalK over the Internet!
+#    mySK=SignalK('http://sksever:3000')  # Instantiate SignalK over the Internet!
     mySK = SignalK('http://127.0.0.1:3000')  # Instantiate SignalK local
     if mySK.Read_SignalK('/signalk/v1/api/vessels/', '', "SignalK No Respons"):
         try:
