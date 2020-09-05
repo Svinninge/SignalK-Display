@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: iso-8859-15 -*-
-
+# Author Per Norrfors 2020-09-05
 import subprocess
 import sys
 sys.path.append("/home/pi/Documents/RPI_Remote/Waveshare/")  # OK
@@ -121,9 +121,9 @@ def get_IP():  # Get my IP
         # get the internal IP address
         addresses = subprocess.check_output(["hostname", "-I"]).split()
         if len(addresses) > 0:
-            internal_address = addresses[0].decode("utf-8") 
+            internal_address = addresses[0].decode("utf-8")
             if len(addresses) > 1: # two connections?
-                internal_address += ' ' + addresses[1].decode("utf-8")   
+                internal_address += ' ' + addresses[1].decode("utf-8")
 
 # get the external IP address
             check_address = requests.get('http://checkip.dyndns.org/').text
