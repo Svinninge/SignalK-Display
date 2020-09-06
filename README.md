@@ -1,4 +1,4 @@
-# The SignalK Server Display app
+# The Signal K Client Display App
 This is a Python Raspberry Pi Signal K client (http://signalk.org)  that read some Signal K data and display that on a Waveshare eINC 2.7" display
 
 Equipment:
