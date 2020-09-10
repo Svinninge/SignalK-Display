@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 # -*- coding: iso-8859-15 -*-
-a# Author Per Norrfors 2020-09-05
+# Author Per Norrfors 2020-09-05
 import subprocess
 import sys
-sys.path.append("/home/pi/Documents/RPI_Remote/Waveshare/")  # OK
+sys.path.append("/home/pi/Documents/SignalK-Display/Waveshare/")  # OK
 import epd2in7b
 from PIL import Image, ImageDraw, ImageFont
 from gpiozero import Button
