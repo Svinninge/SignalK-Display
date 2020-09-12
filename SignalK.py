@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: iso-8859-15 -*-
-# Author Per Norrfors 2020-09-05
+# Author Per Norrfors 2020-09-12
 import subprocess
 import sys
 sys.path.append("/home/pi/Documents/SignalK-Display/Waveshare/")  # OK
@@ -13,26 +13,45 @@ import requests
 import json
 import pytemperature # sudo pip3 install pytemperature
 from gpiozero import CPUTemperature
+import os
 
+def get_ip_address():
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.connect(("8.8.8.8", 80))
+    ip = s.getsockname()[0]
+    ipv4 = os.popen('ip addr show eth0').read().split("inet ")[1].split("/")[0]
 
-def get_interface(interface):  # Get my intf
+    return ip
+
+def get_interface(interface):  # interface=eth0 or wlan0
     try:
-        ii = (subprocess.check_output(['iwgetid', 'wlan0']))
-        ii = ii.decode("utf-8")
-        print(ii)
-        iii = ii.split(':')
+        intFace = ''
+        if interface == 'eth0':
+            ipv4 = os.popen('ip addr show ' + interface).read().split("inet ")[1].split("/")[0]
+            intFace = interface + ' ' + ipv4
+        else:
+            ii = (subprocess.check_output(['iwgetid', 'wlan0']))
+            ii = ii.decode("utf-8")
+            iii = ii.split(':')
+            ssid = str(iii[1].replace('"', '')).strip() # Remove trailing and leading newlines from string
+            if len(ssid)>0:
+                ipv4 = os.popen('ip addr show ' + interface).read().split("inet ")[1].split("/")[0]
 
-        print(str(iii[1]))
-        intFace = str(iii[1].replace('"', '')).strip() # Remove trailing and leading newlines from string
-        print(intFace)
+                intFace = ssid + ' ' + ipv4
+            else:
+                intFace = interface + ' -'
+            print(intFace)
     except Exception as err:
-        print(err)
-        intFace = 'No Internet' + str(err)
+        print (interface + ': No IP: ' + str(err))
+        intFace = interface + ' -'
+        print(intFace)
     finally:
         print(f'{intFace} ')
         return str(intFace)
 
-ssid = get_interface('wlan0')
+iface = get_interface('eth0')
+iface += ' ' + get_interface('wlan0')
+print (iface)
 
 class Display:
     btn = Button(5)
@@ -194,8 +213,10 @@ if __name__ == "__main__":
         row3Red = False
 
     myDisp = Display()  # Instantiate Display
-    myDisp.printToDisplay(boat_name, ssid + ' ' + myIP, temp, pos, pressure, row3Red)
+    myDisp.printToDisplay(boat_name, iface, temp, pos, pressure, row3Red)
     print("wait for keypress...")
+    # add key code...
+    print("exit...")
     exit()  # Terminate script (will not wait for keypress any more)
 else:
     print("Executed when imported")
