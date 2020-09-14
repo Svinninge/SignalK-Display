@@ -46,7 +46,7 @@ def get_interface(interface):  # interface=eth0 or wlan0
         intFace = interface + ' -'
         print(intFace)
     finally:
-        print(f'{intFace} ')
+        print(f'{intFace}')
         return str(intFace)
 
 iface = get_interface('eth0')
@@ -124,6 +124,7 @@ class SignalK:
                     for ii in resp.json():
                         self.res_txt += ii
                         print(ii)              # Debug
+                        break # first line is own ship, next lines are other AIS targets
             json_str = json.dumps(resp.json())
             self.loaded_json = json.loads(json_str)
             return True
@@ -176,6 +177,7 @@ if __name__ == "__main__":
     if mySK.Read_SignalK('/signalk/v1/api/vessels/', '', "SignalK No Respons"):
         try:
             mySK.mmsi = mySK.res_txt
+            print(mySK.mmsi)
             boat_name = mySK.loaded_json[mySK.mmsi]['name'] + ' Signal-K'
         except Exception as err:
             print(err)
